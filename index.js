@@ -51,7 +51,13 @@ server.put('/users/:id', function (req, res) {
   req.body.id = userId
   db.users.forEach((v, k) => {
     if (v.id === userId) {
-      db.users[k] = req.body
+
+      for (prop in req.body) {
+        if (prop === "id" || prop === "userId") {
+          continue
+        }
+        db.users[k][prop] = req.body[prop]
+      }
       res.send(db.users[k])
     }
   })
